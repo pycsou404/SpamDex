@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpamDex</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #222;
+            color: white;
+            text-align: center;
+        }
+        .filters {
+            margin: 20px;
+        }
+        select {
+            padding: 10px;
+            margin: 10px;
+        }
+        .pokedex {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            padding: 20px;
+        }
+        .card {
+            background: #333;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .card img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .details {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #444;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            text-align: center;
+            width: 80%;
+            max-width: 500px;
+            position: relative;
+        }
+        .zoomed {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1.5);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .zoomed img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .close-btn {
+            cursor: pointer;
+            background: red;
+            padding: 5px 10px;
+            border: none;
+            color: white;
+            border-radius: 50%;
+            font-size: 20px;
+            font-weight: bold;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            position: absolute;
+            top: 30px;
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>SpamDex</h1>
+    <div class="filters">
+        <label for="type-filter">Filtrer par Type:</label>
+        <select id="type-filter" onchange="filterCards()">
+            <option value="">Tous</option>
+            <option value="Feu">Feu</option>
+            <option value="Eau">Eau</option>
+            <option value="Nature">Nature</option>
+            <option value="Lumière">Lumière</option>
+            <option value="Terre">Terre</option>
+            <option value="Ombre">Ombre</option>
+        </select>
+        <label for="rarity-filter">Filtrer par Rareté:</label>
+        <select id="rarity-filter" onchange="filterCards()">
+            <option value="">Toutes</option>
+            <option value="Commun">Commun</option>
+            <option value="Rare">Rare</option>
+            <option value="Epique">Epique</option>
+            <option value="Légendaire">Légendaire</option>
+        </select>
+    </div>
+    <div class="pokedex" id="pokedex"></div>
+    <div class="zoomed" id="zoomed">
+        <button class="close-btn" onclick="closeZoom()">&times;</button>
+        <img id="zoomed-image" src="" alt="">
+    </div>
+    <script>
+        const cards = [
+            { name: "Starter Feu", image: "images/starter_feu.png", type: "Feu", rarity: "Commun" },
+            { name: "Starter Eau", image: "images/starter_eau.png", type: "Eau", rarity: "Commun" },
+            { name: "Starter Nature", image: "images/starter_nature.png", type: "Nature", rarity: "Commun" },
+            { name: "Starter Terre", image: "images/starter_terre.png", type: "Terre", rarity: "Commun" },
+            { name: "Starter Ombre", image: "images/starter_ombre.png", type: "Ombre", rarity: "Commun" },
+            { name: "Starter Lumière", image: "images/starter_lumiere.png", type: "Lumière", rarity: "Commun" },
+            { name: "Colosse igné", image: "images/colosse_igné.png", type: "Feu", rarity: "Commun" },
+            { name: "compagnon du feu", image: "images/compagnon_du_feu.png", type: "Feu", rarity: "Commun" },
+            { name: "Colosse igné", image: "images/colosse_igné.png", type: "Feu", rarity: "Commun" },
+            { name: "Compagnon du feu", image: "images/compagnon_du_feu.png", type: "Feu", rarity: "Commun" },
+            { name: "La boule d'ebene", image: "images/la_boule_d_ébéne.png", type: "Feu", rarity: "Commun" },
+            { name: "L'émissaire des mers étoilées", image: "images/l_émissaire_des_mers_étoilées.png", type: "Eau", rarity: "Commun" },
+            { name: "Crapaud de cristal", image: "images/crapaud_de_cristal.png", type: "Eau", rarity: "Commun" },
+            { name: "Flot cristallin", image: "images/flot_cristallin.png", type: "Eau", rarity: "Commun" },
+            { name: "Petit papillon", image: "images/petit_papillon.png", type: "Nature", rarity: "Commun" },
+            { name: "Elytre étourdi", image: "images/élytre_étourdi.png", type: "Nature", rarity: "Commun" },
+            { name: "Fille des bois", image: "images/fille_des_bois.png", type: "Nature", rarity: "Commun" },
+            { name: "Sage de la pierre sacrée", image: "images/sage_de_la_pierre_sacrée.png", type: "Nature", rarity: "Commun" },
+            { name: "Croqueur de fruits verdoyant", image: "images/croqueur_de_fruits_verdoyant.png", type: "Nature", rarity: "Commun" },
+            { name: "le_sableux_sifflant.png", image: "images/le_sableux_sifflant.png", type: "Terre", rarity: "Commun" },
+            { name: "nebula_nocturne.png", image: "images/nebula_nocturne.png", type: "Ombre", rarity: "Commun" },
+            { name: "vagabond_celeste.png", image: "images/vagabond_celeste.png", type: "Ombre", rarity: "Commun" },
+            { name: "félin_errant..png", image: "images/félin_errant..png", type: "Ombre", rarity: "Commun" },
+            { name: "lueur_d'espoir.png", image: "images/lueur_d_espoir.png", type: "Lumière", rarity: "Commun" },
+            { name: "le_lezard_lueur.png", image: "images/le_lezard_lueur.png", type: "Lumière", rarity: "Commun" },
+            { name: "artisan_des_heures.png", image: "images/artisan_des_heures.png", type: "Lumière", rarity: "Commun" },
+            { name: "amber.png", image: "images/amber.png", type: "Feu", rarity: "Rare" },
+            { name: "blaze.png", image: "images/blaze.png", type: "Feu", rarity: "Rare" },
+            { name: "reine_des_ondes.png", image: "images/reine_des_ondes.png", type: "Eau", rarity: "Rare" },
+            { name: "princesse_meridia.png", image: "images/princesse_meridia.png", type: "Nature", rarity: "Rare" },
+            { name: "gardien_crépusculaire.png", image: "images/gardien_crépusculaire.png", type: "Nature", rarity: "Rare" },
+            { name: "aurora_majesté_féline.png", image: "images/aurora_majesté_féline.png", type: "Terre", rarity: "Rare" },
+            { name: "maitre_des_teintes.png", image: "images/maitre_des_teintes.png", type: "Terre", rarity: "Rare" },
+            { name: "gardien_de_la_clairiere.png", image: "images/gardien_de_la_clairiere.png", type: "Ombre", rarity: "Rare" },
+            { name: "frost_de_la_toundra.png", image: "images/frost_de_la_toundra.png", type: "Ombre", rarity: "Rare" },
+            { name: "leo.png", image: "images/leo.png", type: "Lumière", rarity: "Rare" },
+            { name: "le_gamin_des_etoiles.png", image: "images/le_gamin_des_etoiles.png", type: "Lumière", rarity: "Rare" },
+            { name: "roi_des_flammes_ardentes.png", image: "images/roi_des_flammes_ardentes.png", type: "Feu", rarity: "Epique" },
+            { name: "lumina_créature_mystique.png", image: "images/lumina_créature_mystique.png", type: "Eau", rarity: "Epique" },
+            { name: "sylvan_protecteur.png", image: "images/sylvan_protecteur.png", type: "Nature", rarity: "Epique" },
+            { name: "l'epine_protectrice.png", image: "images/l_epine_protectrice.png", type: "terre", rarity: "Epique" },
+            { name: "seigneur_paisible.png", image: "images/seigneur_paisible.png", type: "Ombre", rarity: "Epique" },
+            { name: "dragonnet_des_lumieres.png.png", image: "images/dragonnet_des_lumieres.png", type: "Lumière", rarity: "Epique" },
+            { name: "souverain_des_flammes.png", image: "images/souverain_des_flammes.png", type: "Feu", rarity: "Légendaire" },
+            { name: "leviathan_des_cieux.png", image: "images/leviathan_des_cieux.png", type: "Eau", rarity: "Légendaire" },
+            { name: "aldrin_gorakar.png", image: "images/aldrin_gorakar.png", type: "Nature", rarity: "Légendaire" },
+            { name: "le_gardien_des_dunes.png", image: "images/le_gardien_des_dunes.png", type: "Terre", rarity: "Légendaire" },
+            { name: "veilleur_nocturne.png", image: "images/veilleur_nocturne.png", type: "Ombre", rarity: "Légendaire" },
+            { name: "l'artiste_des_cieux.png", image: "images/l_artiste_des_cieux.png", type: "Lumière", rarity: "Légendaire" },
+            { name: "bouffon_des_braises.png", image: "images/bouffon_des_braises.png", type: "Feu", rarity: "Commun" },
+            { name: "incendie_ravageur.png", image: "images/incendie_ravageur.png", type: "Feu", rarity: "Commun" },
+            { name: "sorciere_pyrokinetique.png", image: "images/sorciere_pyrokinetique.png", type: "Feu", rarity: "Commun" },
+            { name: "batracien_des_marais.png", image: "images/batracien_des_marais.png", type: "Eau", rarity: "Commun" },
+            { name: "danseur_aquatique.png", image: "images/danseur_aquatique.png", type: "Eau", rarity: "Commun" },
+            { name: "loutre_intrepide.png", image: "images/loutre_intrepide.png", type: "Eau", rarity: "Commun" },
+            { name: "cameleon_arcenciel.png", image: "images/cameleon_arcenciel.png", type: "Nature", rarity: "Commun" },
+            { name: "vibrantes_ecailles.png", image: "images/vibrantes_ecailles.png", type: "Nature", rarity: "Commun" },
+            { name: "mante_des_contrees.png", image: "images/mante_des_contrees.png", type: "Nature", rarity: "Commun" },
+            { name: "le_transporteur_sauvage.png", image: "images/le_transporteur_sauvage.png", type: "Terre", rarity: "Commun" },
+            { name: "guerrier_des_neiges.png", image: "images/guerrier_des_neiges.png", type: "Terre", rarity: "Commun" },
+            { name: "la_sorceleuse_lunaire.png", image: "images/la_sorceleuse_lunaire.png", type: "Ombre", rarity: "Commun" },
+            { name: "planeur_de_la_foret.png", image: "images/planeur_de_la_foret.png", type: "Ombre", rarity: "Commun" },
+            { name: "essence_spectrale.png", image: "images/essence_spectrale.png", type: "Ombre", rarity: "Commun" },
+            { name: "forgeron_du_fer.png", image: "images/forgeron_du_fer.png", type: "Lumière", rarity: "Commun" },
+            { name: "rayon_d_or_matinal.png", image: "images/rayon_d_or_matinal.png", type: "Lumière", rarity: "Commun" },
+        ];
+        
+        const pokedex = document.getElementById("pokedex");
+        function showZoom(imageSrc) {
+            document.getElementById("zoomed-image").src = imageSrc;
+            document.getElementById("zoomed").style.display = "block";
+        }
+        function closeZoom() {
+            document.getElementById("zoomed").style.display = "none";
+        }
+        function filterCards() {
+            const typeFilter = document.getElementById("type-filter").value;
+            const rarityFilter = document.getElementById("rarity-filter").value;
+            pokedex.innerHTML = "";
+            cards.forEach(card => {
+                if ((typeFilter === "" || card.type === typeFilter) &&
+                    (rarityFilter === "" || card.rarity === rarityFilter)) {
+                    const div = document.createElement("div");
+                    div.className = "card";
+                    div.innerHTML = `<img src="${card.image}" alt="${card.name}" onclick="showZoom('${card.image}')"><p>${card.type} - ${card.rarity}</p>`;
+                    pokedex.appendChild(div);
+                }
+            });
+        }
+        filterCards();
+    </script>
+</body>
+</html>

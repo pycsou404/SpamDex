@@ -90,6 +90,23 @@
         }
 
         /* Faire la partie @media screen */
+
+        @media screen and (max-width: 1000px) {
+
+            .pokedex {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            
+        }
+
+        @media screen and (max-width: 720px) {
+            
+            .pokedex {
+                grid-template-columns: repeat(1, 1fr);
+            }
+            
+        }
     </style>
 </head>
 <body>

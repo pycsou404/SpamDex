@@ -1,0 +1,268 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #222;
+    color: white;
+    text-align: center;
+}
+
+select {
+    padding: 10px;
+    margin: 10px;
+}
+
+.filters {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    gap: 10px;
+    background: #333;
+    padding: 10px;
+    border-radius: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-group button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+    padding: 5px;
+    position: relative;
+}
+
+.filter-group button img {
+    width: 40px;
+    height: 40px;
+    filter: brightness(0.8);
+    transition: transform 0.2s ease, filter 0.3s ease;
+}
+
+.filter-group button:hover img {
+    transform: scale(1.1);
+    filter: brightness(1);
+}
+
+.filter-group button.active img {
+    filter: brightness(1.5) drop-shadow(0 0 5px rgba(255, 255, 255, 0.7));
+}
+
+.pokedex {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding: 20px;
+}
+
+.card {
+    background: #333;
+    padding: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.3s;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.card img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+/* Faire la partie @media screen */
+@media screen and (max-width: 1000px) {
+    .pokedex {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 720px) {
+    .pokedex {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+#searchBar {
+    margin: 20px auto;
+    padding: 10px;
+    width: 250px;
+    border-radius: 10px;
+    border: 2px solid #444;
+    background-color: #333;
+    color: white;
+    font-size: 16px;
+    text-align: left;
+    transition: all 0.3s ease;
+}
+
+#searchBar::placeholder {
+    color: #bbb;
+    font-style: italic;
+}
+
+#searchBar:focus {
+    outline: none;
+    border-color: #ffa500;
+    background-color: #444;
+}
+
+#searchBar:hover {
+    border-color: #fff;
+}
+
+.filter-info {
+    margin: 10px 0;
+    color: #aaa;
+    font-style: italic;
+}
+
+.card-info {
+    text-align: left;
+    margin-top: 10px;
+}
+
+.card-info h3 {
+    margin: 0;
+    color: white;
+}
+
+.card-effects {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.effect-tag {
+    background: #444;
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+    color: #fff;
+    display: inline-block;
+}
+
+.effect-tag.aleatoire {
+    background: #FF9900;
+}
+
+.effect-tag.cimetiere {
+    background: #663399;
+}
+
+.effect-tag.contrecoup {
+    background: #CC3300;
+}
+
+.effect-tag.cout {
+    background: #996633;
+}
+
+.effect-tag.disparition {
+    background: #99CCFF;
+}
+
+.effect-tag.fumee {
+    background: #CCCCCC;
+}
+
+.effect-tag.immunite {
+    background: #FFCC00;
+}
+
+.effect-tag.multiplicateur {
+    background: #3366FF;
+}
+
+.effect-tag.mystere {
+    background: #9933CC;
+}
+
+.effect-tag.poison {
+    background: #993399;
+}
+
+.effect-tag.provocation {
+    background: #FF3300;
+}
+
+.effect-tag.purge {
+    background: #66CCCC;
+}
+
+.effect-tag.renvoi {
+    background: #0099CC;
+}
+
+.effect-tag.reset {
+    background: #006699;
+}
+
+.effect-tag.revanche {
+    background: #FF6633;
+}
+
+.effect-tag.sac-de-frappe {
+    background: #996666;
+}
+
+.effect-tag.soin-primitif {
+    background: #66CC66;
+}
+
+.effect-tag.temporalite {
+    background: #33CCFF;
+}
+
+.effect-tag.terrain {
+    background: #339933;
+}
+
+.effect-tag.tenacite {
+    background: #666633;
+}
+
+.effect-tag.usage-limite {
+    background: #999966;
+}
+
+.effect-tag.vampirisme {
+    background: #990000;
+}
+
+.effect-tag.vengeur {
+    background: #CC0033;
+}
+
+.effect-tag.erosion {
+    background: #CC9966;
+}
+
+.effect-tag.eternite {
+    background: #9999FF;
+}
+
+.effect-tag.etourdissement {
+    background: #FFCC99;
+}
+
+.effect-tag.renvoie {
+    background: #0099CC;
+}
+
+.effect-tag.frappe {
+    background: #996666;
+}
+
+.effect-tag.vengeance {
+    background: #FF6633;
+}

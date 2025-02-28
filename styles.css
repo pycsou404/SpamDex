@@ -54,12 +54,21 @@ select {
 
 .pokedex {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     gap: 10px;
     padding: 20px;
 }
 
+.card.flipped img {
+    transform: rotateY(360deg); 
+}
+
+.card .card-inner {
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+}
 .card {
+    perspective: 1000px;
     background: #333;
     padding: 15px;
     border-radius: 10px;
@@ -74,6 +83,7 @@ select {
 }
 
 .card img {
+    transition: transform 0.6s;
     width: 100%;
     border-radius: 10px;
 }

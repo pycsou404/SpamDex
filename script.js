@@ -190,7 +190,7 @@ const cards = [
 /*✅*/  { name: "Crimillion", image: "images/cards/Crimillion.png", type: "Eau", rarity: "Commun", pv: 350, effects: [] },
 /*✅*/  { name: "Dragosaure celeste", image: "images/cards/Dragosaure Céleste.png", type: "Nature", rarity: "Commun", pv: 400, effects: ["Reset"] },
 /*✅*/  { name: "Serpent tropical", image: "images/cards/Serpent tropical.png", type: "Nature", rarity: "Commun", pv: 350, effects: [] },
-/*✅*/  { name: "Buffle a bulles", image: "images/cards/buffle_a_bulles.png", type: "Terre", rarity: "Commun", pv: 400, effects: [] },
+/*✅*/  { name: "Buffle a bulles", image: "images/cards/Buffle_a_bulles.png", type: "Terre", rarity: "Commun", pv: 400, effects: [] },
 /*✅*/  { name: "Pigmentus", image: "images/cards/Pigmentus.png", type: "Terre", rarity: "Commun", pv: 300, effects: ["Tenacite"] },
 /*✅*/  { name: "Fennec funeste", image: "images/cards/Fennec Funeste.png", type: "Ombre", rarity: "Commun", pv: 375, effects: [] },
 /*✅*/  { name: "Misty", image: "images/cards/Misty.png", type: "Ombre", rarity: "Commun", pv: 350, effects: [] },
@@ -220,8 +220,59 @@ const cards = [
 /*✅*/  { name: "Dragon de la cite infernale", image: "images/cards/Dragon de la cité infernale Takoo.png", type: "Feu", rarity: "Commun", pv: 350, effects: [] },
 /*✅*/  { name: "Yotaru gardefeuille", image: "images/cards/Yotaru Gardefeuille.png", type: "Nature", rarity: "Commun", pv: 350, effects: [] },
 /*✅*/  { name: "Aristocrate nebulaire", image: "images/cards/Aristocrate_Nebulaire_Luga.png", type: "Lumière", rarity: "Commun", pv: 175, effects: [] },
+/*✅*/  { name: "Chaman mycete pecheur", image: "images/cards/Chaman mycèle pêcheur.png", type: "Terre", rarity: "Commun", pv: 250, effects: [] },
+/*✅*/  { name: "Commando Gerz", image: "images/cards/Commando Gerz.png", type: "Terre", rarity: "Rare", pv: 600, effects: ["Poison"] },
+/*✅*/  { name: "Familier ailé", image: "images/cards/Familier ailé.png", type: "Ombre", rarity: "Rare", pv: 250, effects: [] },
+/*✅*/  { name: "Gnome aventurier ailé", image: "images/cards/Gnome aventurier.png", type: "Terre", rarity: "Rare", pv: 350, effects: [] },
+/*✅*/  { name: "Le cavalier solitaire", image: "images/cards/Le cavalier solitaire.png", type: "Terre", rarity: "Rare", pv: 350, effects: [] },
+/*✅*/  { name: "Paguroniyx", image: "images/cards/Paguroniyx.png", type: "Ombre", rarity: "Commun", pv: 375, effects: ["Mystere"] },
+/*✅*/  { name: "Mere Eucalyptus", image: "images/cards/Mere_Eucalyptus.png", type: "Nature", rarity: "Rare", pv: 400, effects: ["Vengeur"] },
+/*✅*/  { name: "Sir Citrouille", image: "images/cards/Sir Citrouille.png", type: "Feu", rarity: "Rare", pv: 300, effects: ["Vengeur"] },
+/*✅*/  { name: "Vladislaus", image: "images/cards/Vladislaus.png", type: "Feu", rarity: "Epique", pv: 200, effects: ["Tenacite"] },
+/*✅*/  { name: "Mange Cauchemars", image: "images/cards/Mange-Cauchemars.png", type: "Ombre", rarity: "Commun", pv: 350, effects: ["Sac de frappe"] },
+/*✅*/  { name: "Sanglier doré", image: "images/cards/Sanglier_dore.png", type: "Terre", rarity: "Commun", pv: 350, effects: ["Sac de frappe"] },
+/*✅*/  { name: "Crabe Joyau Monde", image: "images/cards/Crabe Joyau-Monde.png", type: "Terre", rarity: "Commun", pv: 350, effects: [] },
+/*✅*/  { name: "Crocabyss", image: "images/cards/Crocabyss.png", type: "Eau", rarity: "Commun", pv: 400, effects: [] },
+/*✅*/  { name: "Terraia Gardienne des Racines", image: "images/cards/Terraia_Gardienne_des_Racines.png", type: "Terre", rarity: "Légendaire", pv: 400, effects: ["Mimetisme"] },
+/*✅*/  { name: "Fanure", image: "images/cards/Fanure.png", type: "Nature", rarity: "Epique", pv: 300, effects: [] },
+/*✅*/  { name: "Le compagnon des esprits Amytisarts", image: "images/cards/Le_compagnon_des_esprits Amytisarts.png", type: "Eau", rarity: "Commun", pv: 350, effects: [] },
+/*✅*/  { name: "Gardien de la Mort Fleurie", image: "images/cards/Gardien de la Mort Fleurie.png", type: "Ombre", rarity: "Epique", pv: 550, effects: ["Cimetiere"] },
+/*✅*/  { name: "Haut-bois des glaces", image: "images/cards/Haut-bois des glaces.png", type: "Eau", rarity: "Commun", pv: 400, effects: [] },
+/*✅*/  { name: "Cimeterre du Néant", image: "images/cards/Cimeterre du Néant.png", type: "Eau", rarity: "Commun", pv: 350, effects: ["Cimetiere","Sac de frappe","Mimetisme"] },
+/*✅*/  { name: "Ignéa Lame de l'Ardent", image: "images/cards/Ignéa Lame de l'Ardent.png", type: "Feu", rarity: "Légendaire", pv: 400, effects: [] },
+/*✅*/  { name: "Duchesse tourmentée", image: "images/cards/Duchesse tourmentée.png", type: "Ombre", rarity: "Légendaire", pv: 400, effects: [] },
+/*✅*/  { name: "Aurore d'Aurelia", image: "images/cards/Aurore_d_Aurelia.png", type: "Lumière", rarity: "Légendaire", pv: 400, effects: ["Reset"] },
+/*✅*/  { name: "Héraldesse Serpentine", image: "images/cards/Héraldesse Serpentine.png", type: "Terre", rarity: "Légendaire", pv: 500, effects: ["Eternite"] },
+/*✅*/  { name: "Chat de l'autre coté", image: "images/cards/Chat de l'autre-coté.png", type: "Ombre", rarity: "Commun", pv: 350, effects: [] },
+/*✅*/  { name: "Apprentie de la Mort", image: "images/cards/Apprentie_de_la_Mort.png", type: "Feu", rarity: "Rare", pv: 350, effects: ["Cimetiere","Vengeur"] },
+/*✅*/  { name: "Maitre Amphibian", image: "images/cards/Maitre Amphibian.png", type: "Terre", rarity: "Rare", pv: 350, effects: ["Erosion"] },
+/*✅*/  { name: "Golem de sable", image: "images/cards/Golem de sable.png", type: "Terre", rarity: "Rare", pv: 350, effects: ["Immunite"] },
+/*✅*/  { name: "Samurai Croc's", image: "images/cards/Samurai Croc's.png", type: "Terre", rarity: "Epique", pv: 350, effects: ["Tenacite","Cimetiere"] },
+/*✅*/  { name: "Emeroldoth Gardien des Temples", image: "images/cards/Emeroldoth_ Gardien des Temples.png", type: "Nature", rarity: "Légendaire", pv: 500, effects: [] },
+/*✅*/  { name: "Lueur de désespoir", image: "images/cards/Lueur de désespoir.png", type: "Ombre", rarity: "Rare", pv: 375, effects: ["Fumee"] },
+/*✅*/  { name: "Codex des sorts lumineux", image: "images/cards/Codex des sorts lumineux.png", type: "Lumière", rarity: "Epique", pv: 200, effects: ["Immunite"] },
+/*✅*/  { name: "Chenille Mielleuse", image: "images/cards/Chenille Mielleuse.png", type: "Lumière", rarity: "Epique", pv: 300, effects: ["Tenacite"] },
+/*✅*/  { name: "Baleine astrale", image: "images/cards/Baleine_astrale.png", type: "Lumière", rarity: "Légendaire", pv: 500, effects: ["Reset"] },
+/*✅*/  { name: "Lyrana Voix d'Azur", image: "images/cards/Lyrana_Voix_dAzur.png", type: "Eau", rarity: "Légendaire", pv: 500, effects: ["Reset"] },
+/*✅*/  { name: "Cornu mythologique", image: "images/cards/Cornu mythologique.png", type: "Terre", rarity: "Rare", pv: 400, effects: [] },
+/*✅*/  { name: "Lumisaros", image: "images/cards/Lumisaros.png", type: "Lumière", rarity: "Commun", pv: 350, effects: [] },
+/*✅*/  { name: "Princesse Lysandra", image: "images/cards/Princesse Lysandra.png", type: "Ombre", rarity: "Légendaire", pv: 400, effects: [] },
+/*✅*/  { name: "Obscurgale", image: "images/cards/Obscurgale.png", type: "Ombre", rarity: "Commun", pv: 350, effects: [] },
+/*✅*/  { name: "Apprentie evocateur", image: "images/cards/apprentie_evocateur.png", type: "Eau", rarity: "Commun", pv: 350, effects: ["Mystere","Mystere"] },
+/*✅*/  { name: "Pyrocoq", image: "images/cards/Pyrocoq.png", type: "Feu", rarity: "Rare", pv: 500, effects: [] },
+/*✅*/  { name: "Insecte Flammeveille", image: "images/cards/Insecte Flammeveille.png", type: "Feu", rarity: "Commun", pv: 350, effects: [] },
+/*✅*/  { name: "Sylvignis", image: "images/cards/Sylvignis.png", type: "Feu", rarity: "Commun", pv: 400, effects: [] },
+/*✅*/  { name: "Serpent de cristal arctique", image: "images/cards/Serpent de cristal arctique.png", type: "Eau", rarity: "Légendaire", pv: 425, effects: ["Vengeur"] },
+/*✅*/  { name: "Sarah Melodie Marine", image: "images/cards/Sarah Melodie Marine.png", type: "Eau", rarity: "Rare", pv: 350, effects: [ "Sac de frappe","Tenacite"] },
+/*✅*/  { name: "Shinobi Éclairant", image: "images/cards/Shinobi Éclairant.png", type: "Lumière", rarity: "Rare", pv: 350, effects: [] },
+/*✅*/  { name: "Cauchemar des Navigateurs", image: "images/cards/Cauchemar_des_Navigateurs.png", type: "Eau", rarity: "Rare", pv: 375, effects: [] },
+/*✅*/  { name: "Chef Croac Croac", image: "images/cards/Chef Croac Croac.png", type: "Ombre", rarity: "Rare", pv: 400, effects: [] },
+/*✅*/  { name: "Chaman fongique", image: "images/cards/Chaman fongique.png", type: "Lumière", rarity: "Rare", pv: 375, effects: ["Multiplicateur"] },
+/*✅*/  { name: "Léonid Cornubi", image: "images/cards/Léonid Cornubis.png", type: "Feu", rarity: "Rare", pv: 450, effects: [] },
+/*✅*/  { name: "Godlur Gardien des Monts", image: "images/cards/Godlur Gardien des Monts.png", type: "Terre", rarity: "Commun", pv: 600, effects: ["Soin primitif","Tenacite"] }
 ];
 
+//todo ajouter Mimetisme ?
 const effectClasses = {
         "Aleatoire": "aleatoire",
         "Cimetiere": "cimetiere",
@@ -336,10 +387,8 @@ function filterCards() {
         const matchesType = activeFilters.type.length === 0 || activeFilters.type.includes(card.type);
         const matchesRarity = activeFilters.rarity.length === 0 || activeFilters.rarity.includes(card.rarity);
         const matchesSearch = searchText === '' || card.name.toLowerCase().includes(searchText);
-
         const matchesEffect = activeFilters.effect.length === 0 ||
             activeFilters.effect.some(effect => card.effects.includes(effect));
-
         return matchesType && matchesRarity && matchesSearch && matchesEffect;
     });
 
@@ -353,7 +402,7 @@ function filterCards() {
     filteredCards.forEach(card => {
         const div = document.createElement("div");
         div.className = "card";
-  
+
         let effectsHTML = '';
         if (card.effects.length > 0) {
             effectsHTML = '<div class="card-effects">';
@@ -363,9 +412,9 @@ function filterCards() {
             });
             effectsHTML += '</div>';
         }
-  
+
         div.innerHTML = `
-            <img src="${card.image}" alt="${card.name}">
+            <img src="${card.image}" alt="${card.name}" loading="lazy">
             <div class="card-info">
                 <h3>${card.name}</h3>
                 <p>Type: ${card.type}</p>
@@ -376,5 +425,6 @@ function filterCards() {
         pokedex.appendChild(div);
     });
 }
+
 updateFilterInfo();
 filterCards();

@@ -9,12 +9,27 @@ body {
     min-height: 100vh;
     animation: gradientBG 15s ease infinite;
     background-size: 200% 200%;
+    position: relative;
+    overflow-x: hidden;
 }
 
-@keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 10%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s;
+    animation: spotlight 8s ease-in-out infinite;
+}
+
+@keyframes spotlight {
+    0%, 100% { opacity: 0; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
 }
 
 h1 {
@@ -26,6 +41,29 @@ h1 {
     color: transparent;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
     animation: titleGlow 2s ease-in-out infinite;
+    position: relative;
+    display: inline-block;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    filter: blur(20px);
+    opacity: 0.2;
+    background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 @keyframes titleGlow {
@@ -51,14 +89,30 @@ select {
 .filter-group {
     display: flex;
     gap: 12px;
-    background: rgba(51, 51, 51, 0.8);
+    background: rgba(51, 51, 51, 0.95);
     padding: 15px;
     border-radius: 15px;
     flex-wrap: wrap;
-    backdrop-filter: blur(10px);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: filterAppear 0.5s ease-out backwards;
 }
+
+@keyframes filterAppear {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.filter-group:nth-child(1) { animation-delay: 0.1s; }
+.filter-group:nth-child(2) { animation-delay: 0.2s; }
+.filter-group:nth-child(3) { animation-delay: 0.3s; }
+.filter-group:nth-child(4) { animation-delay: 0.4s; }
 
 .filter-group button {
     background: rgba(255, 255, 255, 0.1);
@@ -123,16 +177,31 @@ select {
 }
 .card {
     perspective: 1000px;
-    background: rgba(51, 51, 51, 0.9);
+    background: rgba(51, 51, 51, 0.95);
     padding: 20px;
     border-radius: 15px;
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(5px);
     position: relative;
     overflow: hidden;
+    animation: cardAppear 0.6s ease-out backwards;
+}
+
+@keyframes cardAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.card:nth-child(n) {
+    animation-delay: calc(0.1s * var(--card-index, 0));
 }
 
 .card::before {
@@ -169,8 +238,8 @@ select {
 .card-type.feu { color: #FF4500; }
 .card-type.eau { color: #1E90FF; }
 .card-type.nature { color: #32CD32; }
-.card-type.terre { color: #8B4513; }
-.card-type.ombre { color: #4B0082; }
+.card-type.terre { color: #7e5639; }
+.card-type.ombre { color: #9B6BFF; }
 .card-type.lumière { color: #FFD700; }
 
 /* Faire la partie @media screen */
@@ -192,12 +261,23 @@ select {
     width: 300px;
     border-radius: 25px;
     border: 2px solid rgba(255, 255, 255, 0.1);
-    background: rgba(51, 51, 51, 0.8);
+    background: rgba(51, 51, 51, 0.95);
     color: white;
     font-size: 16px;
     text-align: left;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(5px);
+    font-weight: 500;
+}
+
+@keyframes searchAppear {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 #searchBar::placeholder {
@@ -220,10 +300,24 @@ select {
 
 .filter-info {
     margin: 20px 0;
-    color: #ddd;
+    color: #fff;
     font-style: italic;
     font-size: 1.1em;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    text-shadow: none;
+    font-weight: 500;
+    animation: infoAppear 0.5s ease-out backwards;
+    animation-delay: 0.3s;
+}
+
+@keyframes infoAppear {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .card-info {
@@ -234,6 +328,8 @@ select {
 .card-info h3 {
     margin: 0;
     color: white;
+    font-weight: 600;
+    text-shadow: none;
 }
 
 .card-effects {
@@ -251,6 +347,27 @@ select {
     color: #fff;
     display: inline-block;
     transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    font-weight: 500;
+    text-shadow: none;
+}
+
+.effect-tag::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+
+.effect-tag:hover::after {
+    opacity: 1;
 }
 
 .effect-tag:hover {

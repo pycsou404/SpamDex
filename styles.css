@@ -6,6 +6,15 @@ body {
     line-height: 1.6;
     margin: 0;
     padding: 20px;
+    min-height: 100vh;
+    animation: gradientBG 15s ease infinite;
+    background-size: 200% 200%;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 h1 {
@@ -16,6 +25,12 @@ h1 {
     background-clip: text;
     color: transparent;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    animation: titleGlow 2s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+    0%, 100% { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); }
+    50% { text-shadow: 2px 2px 15px rgba(255, 107, 107, 0.4); }
 }
 
 select {
@@ -53,11 +68,29 @@ select {
     padding: 8px;
     border-radius: 10px;
     position: relative;
+    overflow: hidden;
 }
 
-.filter-group button:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
+.filter-group button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translate(-50%, -50%) scale(0);
+    border-radius: 50%;
+    transition: transform 0.5s ease-out;
+}
+
+.filter-group button:active::after {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+}
+
+.filter-group button.active {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
 }
 
 .filter-group button img {
@@ -98,6 +131,28 @@ select {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(5px);
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transition: 0.5s;
+}
+
+.card:hover::before {
+    left: 100%;
 }
 
 .card:hover {
@@ -141,7 +196,7 @@ select {
     color: white;
     font-size: 16px;
     text-align: left;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     backdrop-filter: blur(5px);
 }
 
@@ -156,6 +211,7 @@ select {
     background: rgba(68, 68, 68, 0.9);
     width: 350px;
     box-shadow: 0 0 20px rgba(255, 165, 0, 0.2);
+    transform: translateY(-2px);
 }
 
 #searchBar:hover {
@@ -194,6 +250,12 @@ select {
     font-size: 12px;
     color: #fff;
     display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.effect-tag:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .effect-tag.aleatoire {

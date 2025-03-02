@@ -1,8 +1,74 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #222;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
     color: white;
     text-align: center;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    animation: gradientBG 15s ease infinite;
+    background-size: 200% 200%;
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 10%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s;
+    animation: spotlight 8s ease-in-out infinite;
+}
+
+@keyframes spotlight {
+    0%, 100% { opacity: 0; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+}
+
+h1 {
+    font-size: 3.5rem;
+    margin: 2rem 0;
+    background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    animation: titleGlow 2s ease-in-out infinite;
+    position: relative;
+    display: inline-block;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    filter: blur(20px);
+    opacity: 0.2;
+    background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes titleGlow {
+    0%, 100% { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); }
+    50% { text-shadow: 2px 2px 15px rgba(255, 107, 107, 0.4); }
 }
 
 select {
@@ -13,27 +79,72 @@ select {
 .filters {
     display: flex;
     justify-content: center;
-    gap: 15px;
-    margin: 20px;
+    gap: 20px;
+    margin: 30px auto;
     flex-wrap: wrap;
+    max-width: 1200px;
+    padding: 20px;
 }
 
 .filter-group {
     display: flex;
-    gap: 10px;
-    background: #333;
-    padding: 10px;
-    border-radius: 10px;
+    gap: 12px;
+    background: rgba(51, 51, 51, 0.95);
+    padding: 15px;
+    border-radius: 15px;
     flex-wrap: wrap;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: filterAppear 0.5s ease-out backwards;
 }
 
+@keyframes filterAppear {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.filter-group:nth-child(1) { animation-delay: 0.1s; }
+.filter-group:nth-child(2) { animation-delay: 0.2s; }
+.filter-group:nth-child(3) { animation-delay: 0.3s; }
+.filter-group:nth-child(4) { animation-delay: 0.4s; }
+
 .filter-group button {
-    background: none;
+    background: rgba(255, 255, 255, 0.1);
     border: none;
     cursor: pointer;
-    transition: 0.3s;
-    padding: 5px;
+    transition: all 0.3s ease;
+    padding: 8px;
+    border-radius: 10px;
     position: relative;
+    overflow: hidden;
+}
+
+.filter-group button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translate(-50%, -50%) scale(0);
+    border-radius: 50%;
+    transition: transform 0.5s ease-out;
+}
+
+.filter-group button:active::after {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+}
+
+.filter-group button.active {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
 }
 
 .filter-group button img {
@@ -43,20 +154,17 @@ select {
     transition: transform 0.2s ease, filter 0.3s ease;
 }
 
-.filter-group button:hover img {
-    transform: scale(1.1);
-    filter: brightness(1);
-}
-
 .filter-group button.active img {
     filter: brightness(1.5) drop-shadow(0 0 5px rgba(255, 255, 255, 0.7));
 }
 
 .pokedex {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
     padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
 .card.flipped img {
@@ -69,17 +177,59 @@ select {
 }
 .card {
     perspective: 1000px;
-    background: #333;
-    padding: 15px;
-    border-radius: 10px;
+    background: rgba(51, 51, 51, 0.95);
+    padding: 20px;
+    border-radius: 15px;
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.3s;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.card.initial-load {
+    animation: cardAppear 0.6s ease-out backwards;
+}
+
+.card.initial-load:nth-child(n) {
+    animation-delay: calc(0.1s * var(--card-index, 0));
+}
+
+@keyframes cardAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transition: 0.5s;
+}
+
+.card:hover::before {
+    left: 100%;
 }
 
 .card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
 }
 
 .card img {
@@ -87,6 +237,13 @@ select {
     width: 100%;
     border-radius: 10px;
 }
+
+.card-type.feu { color: #FF4500; }
+.card-type.eau { color: #1E90FF; }
+.card-type.nature { color: #32CD32; }
+.card-type.terre { color: #7e5639; }
+.card-type.ombre { color: #9B6BFF; }
+.card-type.lumière { color: #FFD700; }
 
 /* Faire la partie @media screen */
 @media screen and (max-width: 1000px) {
@@ -102,16 +259,28 @@ select {
 }
 
 #searchBar {
-    margin: 20px auto;
-    padding: 10px;
-    width: 250px;
-    border-radius: 10px;
-    border: 2px solid #444;
-    background-color: #333;
+    margin: 30px auto;
+    padding: 15px 20px;
+    width: 300px;
+    border-radius: 25px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    background: rgba(51, 51, 51, 0.95);
     color: white;
     font-size: 16px;
     text-align: left;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 500;
+}
+
+@keyframes searchAppear {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 #searchBar::placeholder {
@@ -122,7 +291,10 @@ select {
 #searchBar:focus {
     outline: none;
     border-color: #ffa500;
-    background-color: #444;
+    background: rgba(68, 68, 68, 0.9);
+    width: 350px;
+    box-shadow: 0 0 20px rgba(255, 165, 0, 0.2);
+    transform: translateY(-2px);
 }
 
 #searchBar:hover {
@@ -130,9 +302,25 @@ select {
 }
 
 .filter-info {
-    margin: 10px 0;
-    color: #aaa;
+    margin: 20px 0;
+    color: #fff;
     font-style: italic;
+    font-size: 1.1em;
+    text-shadow: none;
+    font-weight: 500;
+    animation: infoAppear 0.5s ease-out backwards;
+    animation-delay: 0.3s;
+}
+
+@keyframes infoAppear {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .card-info {
@@ -143,6 +331,8 @@ select {
 .card-info h3 {
     margin: 0;
     color: white;
+    font-weight: 600;
+    text-shadow: none;
 }
 
 .card-effects {
@@ -159,6 +349,33 @@ select {
     font-size: 12px;
     color: #fff;
     display: inline-block;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    font-weight: 500;
+    text-shadow: none;
+}
+
+.effect-tag::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+
+.effect-tag:hover::after {
+    opacity: 1;
+}
+
+.effect-tag:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .effect-tag.aleatoire {

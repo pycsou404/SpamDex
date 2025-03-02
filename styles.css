@@ -186,7 +186,14 @@ select {
     border: 1px solid rgba(255, 255, 255, 0.1);
     position: relative;
     overflow: hidden;
+}
+
+.card.initial-load {
     animation: cardAppear 0.6s ease-out backwards;
+}
+
+.card.initial-load:nth-child(n) {
+    animation-delay: calc(0.1s * var(--card-index, 0));
 }
 
 @keyframes cardAppear {
@@ -198,10 +205,6 @@ select {
         opacity: 1;
         transform: scale(1);
     }
-}
-
-.card:nth-child(n) {
-    animation-delay: calc(0.1s * var(--card-index, 0));
 }
 
 .card::before {

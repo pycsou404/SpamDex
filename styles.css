@@ -88,6 +88,13 @@ select {
     border-radius: 10px;
 }
 
+.card-type.feu { color: #FF4500; }
+.card-type.eau { color: #1E90FF; }
+.card-type.nature { color: #32CD32; }
+.card-type.terre { color: #8B4513; }
+.card-type.ombre { color: #4B0082; }
+.card-type.lumière { color: #FFD700; }
+
 /* Faire la partie @media screen */
 @media screen and (max-width: 1000px) {
     .pokedex {

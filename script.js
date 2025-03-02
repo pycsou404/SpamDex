@@ -3,6 +3,7 @@ let activeFilters = {
     rarity: [],
     effect: []
 };
+
 let sortOrder = '';
 const cards = [
 /*✅*/  { name: "Starter Feu", image: "images/cards/Starter Feu.png", type: "Feu", rarity: "Commun", pv: 350, effects: [] },
@@ -302,36 +303,56 @@ const effectClasses = {
         "Etourdissement": "etourdissement",
         "Vengeance": "vengeance"
 };
-document.getElementById("pokedex").addEventListener("click", function(e) {
-    let card = e.target.closest(".card");
-    if (card) {
-        card.classList.toggle("flipped");
-        let img = card.querySelector("img");
-        if (img.src.includes("images/cards/")) {
-            img.src = img.src.replace("images/cards/", "images/back/");
-        } else {
-            img.src = img.src.replace("images/back/", "images/cards/");
-        }
-    }
-});
 
-  
+const cardsMap = new Map(cards.map(card => [card.name, card]));
+const uniqueTypes = new Set(cards.map(card => card.type));
+const uniqueRarities = new Set(cards.map(card => card.rarity));
+const uniqueEffects = new Set(cards.flatMap(card => card.effects));
+
+const domCache = {
+    pokedex: document.getElementById("pokedex"),
+    searchBar: document.getElementById("searchBar"),
+    filterInfo: document.getElementById("filter-info")
+};
+
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+const filters = {
+    type: new Set(),
+    rarity: new Set(),
+    effect: new Set()
+};
+
 function toggleFilter(category, value) {
-    document.querySelector(`.filter-group button[data-${category}="cancel"]`).classList.remove("active");
-
-    const index = activeFilters[category].indexOf(value);
+    const filterSet = filters[category];
     const button = document.querySelector(`.filter-group button[data-${category}="${value}"]`);
+    const cancelButton = document.querySelector(`.filter-group button[data-${category}="cancel"]`);
 
-    if (index === -1) {
-        activeFilters[category].push(value);
-        button.classList.add("active");
+    if (value === "cancel") {
+        filters[category].clear();
+        document.querySelectorAll(`.filter-group button[data-${category}]:not([data-${category}="cancel"])`).forEach(btn => btn.classList.remove("active"));
+        cancelButton.classList.add("active");
     } else {
-        activeFilters[category].splice(index, 1);
-        button.classList.remove("active");
-
-        // Si aucun filtre -> activer le bouton reset
-        if (activeFilters[category].length === 0) {
-            document.querySelector(`.filter-group button[data-${category}="cancel"]`).classList.add("active");
+        cancelButton.classList.remove("active");
+        if (filterSet.has(value)) {
+            filterSet.delete(value);
+            button.classList.remove("active");
+            if (filterSet.size === 0) {
+                cancelButton.classList.add("active");
+            }
+        } else {
+            filterSet.add(value);
+            button.classList.add("active");
         }
     }
 
@@ -345,7 +366,7 @@ function resetFilter(category) {
     });
 
     document.querySelector(`.filter-group button[data-${category}="cancel"]`).classList.add("active");
-    activeFilters[category] = [];
+    filters[category] = new Set();
     updateFilterInfo();
     filterCards();
 }
@@ -361,70 +382,78 @@ function setSort(order) {
 }
 
 function updateFilterInfo() {
-    const typeFilters = activeFilters.type.length > 0 ? activeFilters.type.join(', ') : '';
-    const rarityFilters = activeFilters.rarity.length > 0 ? activeFilters.rarity.join(', ') : '';
-    const effectFilters = activeFilters.effect.length > 0 ? activeFilters.effect.join(', ') : '';
+    const filterInfo = [];
+    
+    if (filters.type.size) filterInfo.push(`Types: ${Array.from(filters.type).join(', ')}`);
+    if (filters.rarity.size) filterInfo.push(`Raretés: ${Array.from(filters.rarity).join(', ')}`);
+    if (filters.effect.size) filterInfo.push(`Effets: ${Array.from(filters.effect).join(', ')}`);
 
-    let infoText = '';
-
-    const filterParts = [];
-    if (typeFilters) filterParts.push(`Types: ${typeFilters}`);
-    if (rarityFilters) filterParts.push(`Raretés: ${rarityFilters}`);
-    if (effectFilters) filterParts.push(`Effets: ${effectFilters}`);
-
-    infoText = filterParts.length > 0 ? filterParts.join(' | ') : 'Aucun filtre actif';
-
-    document.getElementById('filter-info').textContent = infoText;
+    domCache.filterInfo.textContent = filterInfo.length ? filterInfo.join(' | ') : 'Aucun filtre actif';
 }
+
 function getEffectClass(effect) {
     return effectClasses[effect] || "";
 }
 
 function filterCards() {
-    const searchText = document.getElementById("searchBar").value.toLowerCase();
-
-    let filteredCards = cards.filter(card => {
-        const matchesType = activeFilters.type.length === 0 || activeFilters.type.includes(card.type);
-        const matchesRarity = activeFilters.rarity.length === 0 || activeFilters.rarity.includes(card.rarity);
-        const matchesSearch = searchText === '' || card.name.toLowerCase().includes(searchText);
-        const matchesEffect = activeFilters.effect.length === 0 ||
-            activeFilters.effect.some(effect => card.effects.includes(effect));
-        return matchesType && matchesRarity && matchesSearch && matchesEffect;
+    const searchText = domCache.searchBar.value.toLowerCase();
+    
+    const filteredCards = cards.filter(card => {
+        return !(filters.type.size && !filters.type.has(card.type)) &&
+               !(filters.rarity.size && !filters.rarity.has(card.rarity)) &&
+               !(filters.effect.size && !card.effects.some(effect => filters.effect.has(effect))) &&
+               !(searchText && !card.name.toLowerCase().includes(searchText));
     });
 
     if (sortOrder) {
-        filteredCards.sort((a, b) => sortOrder === 'asc' ? a.pv - b.pv : b.pv - a.pv);
+        const multiplier = sortOrder === 'asc' ? 1 : -1;
+        filteredCards.sort((a, b) => (a.pv - b.pv) * multiplier);
     }
 
-    const pokedex = document.getElementById("pokedex");
-    pokedex.innerHTML = "";
-
-    filteredCards.forEach(card => {
-        const div = document.createElement("div");
-        div.className = "card";
-
-        let effectsHTML = '';
-        if (card.effects.length > 0) {
-            effectsHTML = '<div class="card-effects">';
-            card.effects.forEach(effect => {
-                const effectClass = getEffectClass(effect);
-                effectsHTML += `<span class="effect-tag ${effectClass}">${effect}</span>`;
-            });
-            effectsHTML += '</div>';
-        }
-
-        div.innerHTML = `
-            <img src="${card.image}" alt="${card.name}" loading="lazy">
-            <div class="card-info">
-                <h3>${card.name}</h3>
-                <p>Type: ${card.type}</p>
-                <p>PV: ${card.pv}</p>
-                ${effectsHTML}
-            </div>
-        `;
-        pokedex.appendChild(div);
-    });
+    renderCards(filteredCards);
 }
+
+function renderCards(cards) {
+    const fragment = document.createDocumentFragment();
+    const template = document.createElement('template');
+
+    cards.forEach(card => {
+        template.innerHTML = `
+            <div class="card">
+                <img src="${card.image}" alt="${card.name}" loading="lazy">
+                <div class="card-info">
+                    <h3>${card.name}</h3>
+                    <p class="card-type ${card.type.toLowerCase()}">Type: ${card.type}</p>
+                    <p>PV: ${card.pv}</p>
+                    ${card.effects.length ? `
+                        <div class="card-effects">
+                            ${card.effects.map(effect => 
+                                `<span class="effect-tag ${getEffectClass(effect)}">${effect}</span>`
+                            ).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+            </div>
+        `.trim();
+        fragment.appendChild(template.content.firstChild);
+    });
+
+    domCache.pokedex.innerHTML = '';
+    domCache.pokedex.appendChild(fragment);
+}
+
+domCache.pokedex.addEventListener("click", (e) => {
+    const card = e.target.closest(".card");
+    if (!card) return;
+    
+    card.classList.toggle("flipped");
+    const img = card.querySelector("img");
+    img.src = img.src.includes("images/cards/") 
+        ? img.src.replace("images/cards/", "images/back/")
+        : img.src.replace("images/back/", "images/cards/");
+});
+
+domCache.searchBar.addEventListener("input", debounce(() => filterCards(), 300));
 
 updateFilterInfo();
 filterCards();
